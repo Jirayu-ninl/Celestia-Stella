@@ -1,0 +1,18 @@
+import { app as appConfig } from '@config'
+import { env } from '@env'
+import { flush, init } from '@sentry/bun'
+
+init({
+  dsn: env.STELLA_SENTRY_DSN,
+  release: appConfig.VERSION,
+  environment: env.APP_ENV,
+  tracesSampleRate: 1,
+  _experiments: {
+    enableLogs: true,
+  },
+  debug: env.APP_ENV === 'staging',
+})
+
+process.on('exit', () => {
+  flush(2000)
+})

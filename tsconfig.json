@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["bun-types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@app": ["src/app"],
+      "@app/*": ["src/app/*"],
+      "@config": ["global/config"],
+      "@config/*": ["global/config/*"],
+      "@env": ["global/env"],
+      "types": ["types"],
+      "types/*": ["types/*"],
+      "public/*": ["public/*"],
+      "#core/*": ["packages/core/*"],
+    },
+    "outDir": "./dist"
+  },
+  "exclude": ["node_modules, dist"]
+}

@@ -1,0 +1,6 @@
+[submodule "packages/prisma"]
+	path = packages/prisma
+	url = https://github.com/Jirayu-ninl/Celestia-Prisma.git
+[submodule "packages/core"]
+	path = packages/core
+	url = https://github.com/Nexel-Lab/Notch-Core.git

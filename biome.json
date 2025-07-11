@@ -1,0 +1,147 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "files": {
+    "includes": ["**/*.{ts,tsx}", "!**/glslEditor.min.js"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "lineWidth": 80,
+    "bracketSpacing": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "off",
+        "useAltText": "off",
+        "useKeyWithClickEvents": "off"
+      },
+      "complexity": {
+        "noUselessTernary": "error",
+        "noUselessFragments": "error",
+        "useFlatMap": "error",
+        "noUselessSwitchCase": "error",
+        "useArrowFunction": "warn",
+        "useLiteralKeys": "warn",
+        "noForEach": "info",
+        "noBannedTypes": "info"
+      },
+      "style": {
+        "useImportType": "error",
+        "useExportType": "error",
+        "noUselessElse": "error",
+        "useThrowNewError": "error",
+        "noInferrableTypes": "error",
+        "noNamespace": "error",
+        "useThrowOnlyError": "warn",
+        "useEnumInitializers": "warn",
+        "noParameterAssign": "info"
+      },
+      "suspicious": {
+        "noSuspiciousSemicolonInJsx": "error",
+        "noDuplicateClassMembers": "error",
+        "useAwait": "error",
+        "noEmptyBlockStatements": "warn",
+        "noExplicitAny": "info",
+        "noAssignInExpressions": "info",
+        "noArrayIndexKey": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "useJsxKeyInIterable": "error",
+        "noUnreachable": "error",
+        "noChildrenProp": "warn"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "cva", "tw", "tw.*", "cn"]
+          }
+        }
+      },
+      "security": {
+        "noDangerouslySetInnerHtmlWithChildren": "error",
+        "noDangerouslySetInnerHtml": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single",
+      "trailingCommas": "all",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true
+    },
+    "formatter": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.test.ts", "package.json"],
+      "json": {
+        "formatter": {
+          "expand": "auto"
+        }
+      },
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off",
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    }
+  ],
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "useSortedAttributes": "on",
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ["npm:*", "npm:*/**"],
+              ":PACKAGE_WITH_PROTOCOL:",
+              ":URL:",
+              ":PACKAGE:",
+              ["#core/*", "#core/**"],
+              ["#cosmos/*", "#cosmos/**"],
+              ["#prisma/*", "#prisma/**"],
+              ["#nexus/*", "#nexus/**"],
+              ":ALIAS:",
+              [":BUN:", ":NODE:"],
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
