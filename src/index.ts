@@ -1,6 +1,7 @@
 import env, { isDevelopment } from '@env'
 import * as Sentry from '@sentry/bun'
 import { Hono } from 'hono'
+import { HTTPException } from 'hono/http-exception'
 import { logger } from 'hono/logger'
 import { sentryMiddleware } from '@/integration/sentry'
 import { corsPrivate, corsPublic, requireBearer } from './middleware'
@@ -19,6 +20,9 @@ app.use('/*', requireBearer)
 app.onError((err, c) => {
   Sentry.captureException(err)
   console.error('[Sentry]', err)
+  if (err instanceof HTTPException) {
+    return err.getResponse()
+  }
   return c.json({ error: 'Internal server error' }, 500)
 })
 

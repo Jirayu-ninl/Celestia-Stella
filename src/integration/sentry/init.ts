@@ -1,6 +1,11 @@
 import { app as appConfig } from '@config'
 import { env } from '@env'
-import { flush, init } from '@sentry/bun'
+import {
+  extraErrorDataIntegration,
+  flush,
+  init,
+  prismaIntegration,
+} from '@sentry/bun'
 
 init({
   dsn: env.STELLA_SENTRY_DSN,
@@ -10,6 +15,7 @@ init({
   _experiments: {
     enableLogs: true,
   },
+  integrations: [prismaIntegration(), extraErrorDataIntegration()],
   debug: env.APP_ENV === 'staging',
 })
 
