@@ -1,1 +1,1 @@
-export { corsPrivate, corsPublic, corsRoot, requireBearer } from './cors'
+export { corsPrivate, corsPublic, requireBearer } from './cors'
