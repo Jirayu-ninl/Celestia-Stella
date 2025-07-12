@@ -17,7 +17,12 @@ export const corsPrivate = cors({
 
 export const requireBearer: MiddlewareHandler = async (c, next) => {
   const auth = c.req.header('Authorization')
+  if (c.req.path.startsWith('/public/') || c.req.path === '/') return next()
   if (!auth?.startsWith('Bearer ')) {
+    return c.text('Unauthorized', 401)
+  }
+  const authToken = auth.split('Bearer ')[1]
+  if (authToken !== env.AUTHORIZE) {
     return c.text('Unauthorized', 401)
   }
   await next()

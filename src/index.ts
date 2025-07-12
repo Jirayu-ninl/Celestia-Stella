@@ -1,10 +1,9 @@
 import env, { isDevelopment } from '@env'
 import * as Sentry from '@sentry/bun'
 import { Hono } from 'hono'
-import { bearerAuth } from 'hono/bearer-auth'
 import { logger } from 'hono/logger'
 import { sentryMiddleware } from '@/integration/sentry'
-import { corsPrivate, corsPublic } from './middleware'
+import { corsPrivate, corsPublic, requireBearer } from './middleware'
 
 const app = new Hono()
 
@@ -15,12 +14,7 @@ app.use('*', sentryMiddleware)
 app.use('/', corsPublic)
 app.use('/public/*', corsPublic)
 app.use('/*', corsPrivate)
-app.use(
-  '/*',
-  bearerAuth({
-    token: env.AUTHORIZE,
-  }),
-)
+app.use('/*', requireBearer)
 
 app.onError((err, c) => {
   Sentry.captureException(err)
