@@ -11,6 +11,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "inlineSources": true,
     "types": ["bun-types"],
     "baseUrl": ".",
     "paths": {
@@ -23,6 +25,9 @@
       "types": ["types"],
       "types/*": ["types/*"],
       "public/*": ["public/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@modules": ["src/modules"],
+      "@modules/*": ["src/modules/*"],
       "#core/*": ["packages/core/*"],
     },
     "outDir": "./dist"
