@@ -1,9 +1,11 @@
-import env, { isDevelopment } from '@env'
+import { isDevelopment } from '@env'
 import * as Sentry from '@sentry/bun'
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { logger } from 'hono/logger'
+import { z } from 'zod'
 import { sentryMiddleware } from '@/integration/sentry'
+import { controllers } from './controllers'
 import { corsPrivate, corsPublic, requireBearer } from './middleware'
 
 const app = new Hono()
@@ -21,38 +23,19 @@ app.onError((err, c) => {
   Sentry.captureException(err)
   console.error('[Sentry]', err)
   if (err instanceof HTTPException) {
-    return err.getResponse()
+    return c.json({ error: err.getResponse(), message: 'HTTPException' }, 501)
+  }
+  if (err instanceof z.ZodError) {
+    const errors = z.flattenError(err)
+    return c.json({ error: errors, message: 'ZodError' }, 400)
   }
   return c.json({ error: 'Internal server error' }, 500)
 })
 
-app.get('/debug/sentry', () => {
-  try {
-    throw new Error(
-      `[TEST] api/sentryExampleAPIError: Throw error from TheIceJi-STELLA <${env.APP_ENV}>`,
-    )
-  } catch (e) {
-    Sentry.captureException(e)
-  }
-  return new Response(
-    JSON.stringify({ result: 'sent to Sentry successfully' }),
-    { status: 201 },
-  )
+app.notFound((c) => {
+  return c.text('404 Not found', 404)
 })
 
-app.get('/', (c) => {
-  return c.text('Celestia Stella is up!')
-})
-
-app.get('/public/status', (c) => {
-  const health = {
-    name: 'TheIceJi STELLA',
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    environment: env.NODE_ENV,
-    uptime: process.uptime(),
-  }
-  return c.json(health)
-})
+controllers(app)
 
 export default app
