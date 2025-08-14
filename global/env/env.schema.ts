@@ -86,5 +86,5 @@ export const envSchema = z.object({
   STRIPE_DONATE_ID: z.string(),
   STRIPE_METADATA_KEY: z.string(),
   // ** MONITORING
-  STELLA_SENTRY_DSN: z.string().url().startsWith('https://'),
+  SENTRY_DSN: z.string().url().startsWith('https://'),
 })
