@@ -1,41 +1,61 @@
 import { isDevelopment } from '@env'
-import * as Sentry from '@sentry/bun'
 import { Hono } from 'hono'
-import { HTTPException } from 'hono/http-exception'
+import { etag } from 'hono/etag'
 import { logger } from 'hono/logger'
-import { z } from 'zod'
+import { prettyJSON } from 'hono/pretty-json'
+import { trimTrailingSlash } from 'hono/trailing-slash'
 import { sentryMiddleware } from '@/integration/sentry'
 import { controllers } from './controllers'
-import { corsPrivate, corsPublic, requireBearer } from './middleware'
+import {
+  advLogger,
+  corsPrivate,
+  corsPublic,
+  errorHandler,
+  // handleHTTPError,
+  parseGzippedJson,
+  requestIdHonoMiddleware,
+  requireBearer,
+  sentryErrorHandler,
+  strictTransportSecurity,
+  xContentTypeOptions,
+} from './middleware'
 
 const app = new Hono()
+advLogger.configureLogger(
+  {
+    prettyPrint: Boolean(process.env.PRETTY_PRINT),
+  },
+  true,
+)
 
+app.use('*', etag())
+app.use(trimTrailingSlash())
+app.use(parseGzippedJson)
 if (isDevelopment) {
   app.use('*', logger())
 }
+
+app.use('*', prettyJSON())
+app.use('*', requestIdHonoMiddleware())
 app.use('*', sentryMiddleware)
 app.use('/', corsPublic)
 app.use('/public/*', corsPublic)
 app.use('/*', corsPrivate)
 app.use('/*', requireBearer)
 
-app.onError((err, c) => {
-  Sentry.captureException(err)
-  console.error('[Sentry]', err)
-  if (err instanceof HTTPException) {
-    return c.json({ error: err.getResponse(), message: 'HTTPException' }, 501)
-  }
-  if (err instanceof z.ZodError) {
-    const errors = z.flattenError(err)
-    return c.json({ error: errors, message: 'ZodError' }, 400)
-  }
-  return c.json({ error: 'Internal server error' }, 500)
-})
+app.onError(sentryErrorHandler)
+// app.onError(handleHTTPError())
+
+app.use('*', strictTransportSecurity())
+app.use('*', xContentTypeOptions())
+
+errorHandler.listenToErrorEvents()
 
 app.notFound((c) => {
   return c.text('404 Not found', 404)
 })
 
 controllers(app)
+advLogger.info(`[STELLA] App started at ${new Date().toISOString()}`)
 
 export default app

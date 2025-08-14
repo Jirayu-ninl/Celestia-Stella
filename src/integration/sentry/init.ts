@@ -8,7 +8,7 @@ import {
 } from '@sentry/bun'
 
 init({
-  dsn: env.STELLA_SENTRY_DSN,
+  dsn: env.SENTRY_DSN,
   release: appConfig.VERSION,
   environment: env.APP_ENV,
   tracesSampleRate: 1,
