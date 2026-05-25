@@ -35,6 +35,16 @@ bun.lock
 **/public/sw*
 **/public/workbox-*
 .infisical.json
+.trae
+.clinerules
+.cursor
+.windsurfrules
+CLAUDE.md
+QWEN.md
+.superdesign
+.mcp.json
+tsconfig.ts*
+requirement*.md
 
 # misc
 .DS_Store

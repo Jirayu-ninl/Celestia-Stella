@@ -40,6 +40,7 @@ app.use('*', requestIdHonoMiddleware())
 app.use('*', sentryMiddleware)
 app.use('/', corsPublic)
 app.use('/public/*', corsPublic)
+app.use('/public/healthz', corsPublic)
 app.use('/*', corsPrivate)
 app.use('/*', requireBearer)
 

@@ -6,9 +6,9 @@ export const controllers = (app: Hono) => {
   app.get('/', (c) => {
     return c.text('Celestia Stella is up!')
   })
-  app.get('/public/status', (c) => {
+  app.get('/healthz', (c) => {
     const health = {
-      name: 'TheIceJi STELLA',
+      name: 'Celestia STELLA',
       status: 'ok',
       timestamp: new Date().toISOString(),
       environment: env.NODE_ENV,

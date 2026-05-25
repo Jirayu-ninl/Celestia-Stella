@@ -7,7 +7,7 @@ const debug = new Hono()
 debug.get('/sentry', () => {
   try {
     throw new Error(
-      `[TEST] api/sentryExampleAPIError: Throw error from TheIceJi-STELLA <${env.APP_ENV}>`,
+      `[TEST] api/sentryExampleAPIError: Throw error from Celestia-STELLA <${env.APP_ENV}>`,
     )
   } catch (e) {
     Sentry.captureException(e)
